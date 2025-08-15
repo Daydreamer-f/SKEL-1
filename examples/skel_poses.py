@@ -6,7 +6,7 @@ import numpy as np
 import torch
 
 from aitviewer.viewer import Viewer
-from aitviewer.renderables.skel import SKELSequence
+from skel.viewer.renderables.skel import SKELSequence
 from skel.skel_model import SKEL
 from skel.kin_skel import pose_limits
 
@@ -17,11 +17,13 @@ if __name__ == '__main__':
         
     parser.add_argument('--gender', type=str, choices=['female', 'male'], required=True)
     parser.add_argument('-e', '--export_mesh', type=str, help='Export the mesh of the skel model to this folder', default=None)
+    parser.add_argument('--frames_per_bone', type=int, default=16, help='Number of frames per bone parameter variation')
 
     args = parser.parse_args()
 
     gender = args.gender
-    fps = 15
+    frames_per_bone = args.frames_per_bone
+    fps = frames_per_bone/2
    
     # Instantiate the SKEL model
     skel_model = SKEL(gender)
@@ -34,11 +36,11 @@ if __name__ == '__main__':
                             
                             #Back 
                             'lumbar_bending',
-                            'lumbar_extension',
-                            'lumbar_twist',
+                            # 'lumbar_extension',
+                            # 'lumbar_twist',
         
-                            'thorax_bending',
-                            # 'thorax_extension',
+                            # 'thorax_bending',
+                            'thorax_extension',
                             # 'thorax_twist',
                             
                             # 'head_bending',
@@ -55,8 +57,8 @@ if __name__ == '__main__':
                             # 'shoulder_r_z',
 
                             'scapula_abduction_r',
-                            'scapula_elevation_r',
-                            'scapula_upward_rot_r',
+                            # 'scapula_elevation_r',
+                            # 'scapula_upward_rot_r',
                             
                             # 'scapula_abduction_l',
                             # 'scapula_elevation_l',
@@ -83,7 +85,7 @@ if __name__ == '__main__':
                             # 'hip_flexion_l',
                             
                             'knee_angle_r',
-                            'knee_angle_l',
+                            # 'knee_angle_l',
                             
                             #Feet                           
                             'ankle_angle_r',
@@ -100,7 +102,7 @@ if __name__ == '__main__':
     min_val = -math.pi
     max_val = math.pi        
 
-    frames_per_bone = 30
+
     assert frames_per_bone % 2 == 0
     poses = np.zeros((len(parameters_to_vary) * frames_per_bone, skel_model.num_q_params))
     for p_i, param in enumerate(parameters_to_vary):
@@ -122,6 +124,7 @@ if __name__ == '__main__':
     # Set the other parameters to default values
     betas = torch.zeros((poses.shape[0], 10), dtype=torch.float32)
     trans = torch.zeros((poses.shape[0], 3), dtype=torch.float32)
+    poses = torch.tensor(poses, dtype=torch.float32)
     
     skel_seq = SKELSequence(skel_layer=skel_model, betas=betas, poses_body=poses, poses_type='skel', 
                             trans=trans, is_rigged=True, show_joint_angles=True, name='SKEL', z_up=False

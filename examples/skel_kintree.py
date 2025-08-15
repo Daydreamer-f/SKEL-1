@@ -4,7 +4,7 @@ import os
 import torch
 
 from aitviewer.viewer import Viewer
-from aitviewer.renderables.skel import SKELSequence
+from skel.viewer.renderables.skel import SKELSequence
 from skel.skel_model import SKEL
 
 if __name__ == '__main__':

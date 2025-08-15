@@ -6,7 +6,7 @@ import numpy as np
 import torch
 
 from aitviewer.viewer import Viewer
-from aitviewer.renderables.skel import SKELSequence
+from skel.viewer.renderables.skel import SKELSequence
 from aitviewer.renderables.smpl import SMPLSequence
 from aitviewer.configuration import CONFIG as C
 from skel.skel_model import SKEL

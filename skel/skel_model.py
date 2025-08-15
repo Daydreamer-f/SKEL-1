@@ -84,7 +84,6 @@ class SKEL(nn.Module):
         self.gender = gender
         
         if model_path is None:
-            # skel_file = f"/Users/mkeller2/Data/skel_models_v1.0/skel_{gender}.pkl"
             skel_file = os.path.join(cg.skel_folder, f"skel_{gender}.pkl")
         else:
             skel_file = os.path.join(model_path, f"skel_{gender}.pkl")

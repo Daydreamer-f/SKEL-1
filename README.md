@@ -68,58 +68,102 @@ cd SKEL
 
 Create a virtual environment and install the SKEL package
 ```shell
-pip install -U pip   
-python3.8 -m venv skel_venv
-source skel_venv/bin/activate
-pip install git+https://github.com/mattloper/chumpy 
-pip install -e .
+bash install.sh 
 ```
+
 
 ### Downloading SKEL
-Create an account on https://skel.is.tue.mpg.de/ (Necessary for the download to work).
 
-Then download the SKEL model from the download page with the "Download Models" button.
-Extract the downloaded folder and edit the file `SKEL/skel/config.py` to specify the folder containing the downloaded SKEL model folder: `skel_folder = '/path/to/skel_models_v1.0`
+Create an account on https://skel.is.tue.mpg.de/ and https://smpl.is.tue.mpg.de/. The following script will ask for your login and password for each of these website to download the data.
 
-
-Below, we explain how to set up the visualizer for SKEL (only supported on Linux and Mac), and run some example code.
-
-### Aitviewer
-
-If you want to run the Demos, you will also need our aitviewer fork for visualization:
-
+Then run:
 ```shell
-cd ..
-git clone https://github.com/MarilynKeller/aitviewer-skel.git
-cd aitviewer-skel 
-pip install -e .
+bash fetch_skel.sh
 ```
 
-Edit then the file `aitviewer/aitviewer/aitvconfig.yaml` to point to the SKEL folder:
+If this fails, you can also download the data manually from the [SKEL download page](https://skel.is.tue.mpg.de/download) and the [SMPL download page](https://smpl.is.tue.mpg.de/download) and place them in the `data` folder of this repository. The expected structure is:
 
-```skel_models: "/path/to/skel_models_v1.0"```
+```
+SKEL/ # Root of the repository
+└── data/
+    ├── skel/
+    │   ├── skel_female.pkl
+    │   ├── skel_male.pkl
+    │   └── ...
+    └── smpl/
+        ├── SMPL_FEMALE.pkl
+        ├── SMPL_MALE.pkl
+        └── SMPL_NEUTRAL.pkl
+```
+For running the demos other than the quickstart you will need the following.
 
-### SMPL and MPI Mesh package
+### SMPLH and MPI Mesh package
 
-! Note that the MPI mesh package is only supported on Linux systems. If you are not on Linux, you will have to comment out the code depending on the package psbody.mesh and code your own visualization.
 
-If you want to run an alignment to SMPL, you need to download the SMPL model.
+#### SMPL
+
+If you want to run an alignment to a SMPL body or sequence, you need to download the SMPL model.
+
 First, create an account on https://smpl.is.tue.mpg.de/.
-Then download this file: SMPL_python_v.1.1.0.zip from the download page. And run:
+Then run the following script to download the SMPL model:
 
 ```shell
-cd ../SKEL
-python scripts/setup_smpl.py /path/to/SMPL_python_v.1.1.0.zip  
+bash fetch_smpl.sh
 ```
+
+#### SMPLH
+
+SMPLH is a version of SMPL with the parametric hands from MANO. The AMASS dataset is in this format. To view the sample AMASS sequence in aitviewer, you need to download the SMPLH model.
+
+First, create an account on https://mano.is.tue.mpg.de/.
+Then run the following script to download the SMPLH model:
+
+```shell
+bash fetch_smplh.sh
+```
+
+If it fails, you can also download the data manually from the download pages of https://smpl.is.tue.mpg.de/ and https://mano.is.tue.mpg.de/, and place them in the `data` folder of this repository. Note that SMPLH files require pre-processing, done by the `fetch_smplh.sh` script. 
+
+
+
+The final expected structure for these models is:
+
+``` 
+SKEL/ # Root of the repository
+└── data/
+    ├── skel/
+    │   ├── skel_female.pkl
+    │   ├── skel_male.pkl
+    │   └── ...
+    └── smpl/
+        ├── SMPL_FEMALE.pkl
+        ├── SMPL_MALE.pkl
+        └── SMPL_NEUTRAL.pkl
+    └── smplx/
+        ├── SMPLH_FEMALE.pkl
+        ├── SMPLH_MALE.pkl
+        └── SMPLH_NEUTRAL.pkl
+```
+
+### Interactive visualization of the fits
 
 For visualizing the fitting process you need the MPI mesh package, you can install it with the following line:
 
+! Note that the MPI mesh package is only supported on Linux systems.
+
 ```shell
-pip install git+https://github.com/MPI-IS/mesh.git  
+pip install git+https://github.com/MarilynKeller/mesh
 ```
-Note that the mesh package is only supported on Linux, but it is only necessary for the visualization of the fitting processes.
 
 ## Demos
+
+
+### Shape space
+Vizualize the shape space:
+
+```shell
+python examples/skel_betas.py --gender female 
+```
 
 ### Pose parameters
 Visualize the effects of the pose parameters of SKEL:
@@ -131,12 +175,6 @@ python examples/skel_poses.py --gender male
 ![]()
 <img src="assets/pose_demo.png" alt="Image Description" style="width: 50%;" />
 
-### Shape space
-Vizualize the shape space:
-
-```shell
-python examples/skel_betas.py --gender female 
-```
 
 ### Rigging
 Visualize the skinning weights of the skin and bones to the SKEL kinematic tree:
@@ -159,10 +197,10 @@ python examples/skel_kintree.py --gender female
 You can see a visual of the joint ids [here](assets/skel_kin_tree_nb.jpg) and their names and the list of degrees of freedom [here](skel/kin_skel.py)
 
 ### SKEL sequence
-Visualize a SKEL sequence. You can find a sample SKEL motion in `skel_models_v1.0/sample_motion/ ` and the corresponding SMPL motion.
+Visualize a SKEL sequence. You can find a sample SKEL motion in `data/skel/sample_motion/ ` and the corresponding SMPL motion.
 
 ```shell
-python examples/skel_sequence.py /path/to/skel_models_v1.x/sample_motion/01_01_poses_skel.pkl -z 
+python examples/skel_sequence.py data/skel/sample_motion/01_01_poses_skel.pkl -z 
 ```
 
 To visualize the SMPL sequence alongside : 

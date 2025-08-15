@@ -4,7 +4,8 @@ requirements = ["wheel",
                 "torch>=1.6.0",
                 "smplx",
                 "trimesh",
-                "tqdm"]
+                "tqdm",
+                "moderngl-window==2.4.6"]
 
 setup(
     name="skel",
@@ -28,6 +29,5 @@ setup(
         "smpl"
     ],
     platforms=["any"],
-    python_requires=">=3.7,<3.11",
     install_requires=requirements,
 )
