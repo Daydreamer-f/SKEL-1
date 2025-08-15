@@ -96,14 +96,11 @@ If this fails, you can also download the data manually from the [SKEL download p
 ```
 SKEL/ # Root of the repository
 └── data/
-    ├── skel/
-    │   ├── skel_female.pkl
-    │   ├── skel_male.pkl
-    │   └── ...
-    └── smpl/
-        ├── SMPL_FEMALE.pkl
-        ├── SMPL_MALE.pkl
-        └── SMPL_NEUTRAL.pkl
+    └── skel/
+        ├── skel_female.pkl
+        ├── skel_male.pkl
+        └── ...
+
 ```
 For running the demos other than the quickstart you will need the following.
 
