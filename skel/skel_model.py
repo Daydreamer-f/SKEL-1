@@ -14,6 +14,7 @@ import torch
 import numpy as np
 import pickle as pkl
 from typing import NewType, Optional
+from scipy.sparse import coo_matrix
 
 from skel.joints_def import curve_torch_3d, left_scapula, right_scapula
 from skel.osim_rot import ConstantCurvatureJoint, CustomJoint, EllipsoidJoint, PinJoint, WalkerKnee
@@ -207,6 +208,19 @@ class SKEL(nn.Module):
             CustomJoint(axis=[[0.01716099, -0.99266564, -0.11966796]], axis_flip=[[1]]), #2 2 radius_l 
             CustomJoint(axis=[[-1,0,0], [0,0,-1]], axis_flip=[1, 1]), #2 3 hand_l 
         ])
+        
+        # Temporary fix to avoid arm collapsing:
+        tmp_skin_weights = skel_data['skin_weights'].todense()
+        tmp_skin_weights[:, 4] *= 2.
+        tmp_skin_weights[:, 3] = 0.
+        tmp_skin_weights[:, 9] *= 2.
+        tmp_skin_weights[:, 8] = 0.
+        tmp_skin_weights[:, 17] *= 2.
+        tmp_skin_weights[:, 16] = 0.
+        tmp_skin_weights[:, 22] *= 2.
+        tmp_skin_weights[:, 21] = 0.
+        self.register_buffer('skin_weights', sparce_coo_matrix2tensor(coo_matrix(tmp_skin_weights)))
+
         
     def pose_params_to_rot(self, osim_poses):
         """ Transform the pose parameters to 3x3 rotation matrices

@@ -15,11 +15,10 @@ mkdir -p ./data
 echo -e "\nDownloading SKEL..."
 wget --post-data "username=$username&password=$password" 'https://download.is.tue.mpg.de/download.php?domain=skel&resume=1&sfile=skel_models_v1.1.zip&resume=1' -O './data/SKEL.zip' --no-check-certificate --continue
 
-# Sanity check: make sure we didn't save an HTML error page
-if file "./data/SKEL.zip" | grep -qi 'HTML'; then
-  echo "Error: Server returned an HTML page instead of a ZIP (likely auth/license issue)."
-  echo "Log in at https://skel.is.tue.mpg.de, accept the license, then retry."
-  exit 1
+#check that the file is more than 100MB
+if [ ! -f ./data/SMPLH.tar.xz ] || [ $(stat -c%s ./data/SMPLH.tar.xz) -lt 100000000 ]; then
+    echo "Error: SMPLH download failed or file is too small. Please check your credentials and try again."
+    exit 1
 fi
 
 # Unzip and place in the right directory

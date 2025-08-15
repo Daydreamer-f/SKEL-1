@@ -7,7 +7,7 @@ This repository is part of the code release for the Siggraph Asia 2023 paper "Fr
 [[paper](https://download.is.tue.mpg.de/skel/main_paper.pdf)] [[project page](https://skel.is.tue.mpg.de/)]
 
 ### News
-- **2025/08/15**: Simplification of the installation process.
+- **2025/08/15**: The installation was simplified and the code and dependancies were updated to work on python3.12.
 
 ----
 
@@ -74,6 +74,11 @@ cd SKEL
 Create a virtual environment and install the SKEL package
 ```shell
 bash install.sh 
+```
+
+Source the virtual environment
+```shell
+source skel_venv/bin/activate
 ```
 
 

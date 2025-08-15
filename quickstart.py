@@ -28,10 +28,11 @@ if __name__ == '__main__':
     skin_mesh_path = os.path.join('output', f'skin_mesh_{gender}.obj')
     skeleton_mesh_path = os.path.join('output', f'skeleton_mesh_{gender}.obj')
     
-    trimesh.Trimesh(vertices=skel_output.skin_verts.detach().cpu().numpy()[0], 
-                    faces=skel.skin_f.cpu()).export(skin_mesh_path)
+    skin_mesh = trimesh.Trimesh(vertices=skel_output.skin_verts.detach().cpu().numpy()[0], 
+                    faces=skel.skin_f.cpu())
+    skin_mesh.export(skin_mesh_path)
     print('Skin mesh saved to: {}'.format(skin_mesh_path))
     
-    trimesh.Trimesh(vertices=skel_output.skel_verts.detach().cpu().numpy()[0],
-                    faces=skel.skel_f.cpu()).export(skeleton_mesh_path)
+    skeleton_mesh=trimesh.Trimesh(vertices=skel_output.skel_verts.detach().cpu().numpy()[0],faces=skel.skel_f.cpu())
+    skeleton_mesh.export(skeleton_mesh_path)
     print('Skeleton mesh saved to: {}'.format(skeleton_mesh_path))

@@ -12,7 +12,14 @@ password=$(urle $password)
 mkdir -p ./data
 echo -e "\nDownloading SMPL..."
 wget --post-data "username=$username&password=$password" 'https://download.is.tue.mpg.de/download.php?domain=smpl&sfile=SMPL_python_v.1.1.0.zip&resume=1' -O './data/SMPL.zip' --no-check-certificate --continue 
-unzip ./data/SMPL.zip -d ./data/SMPL >/dev/null || { echo "Invalid/corrupted ZIP (probable 401)."; exit 1; }
+
+#check that the file is more than 100MB
+if [ ! -f ./data/SMPLH.tar.xz ] || [ $(stat -c%s ./data/SMPLH.tar.xz) -lt 100000000 ]; then
+    echo "Error: SMPLH download failed or file is too small. Please check your credentials and try again."
+    exit 1
+fi
+
+unzip ./data/SMPL.zip -d ./data/SMPL
 
 #Rename stuffs
 mkdir -p ./data/smpl
