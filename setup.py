@@ -5,6 +5,7 @@ requirements = ["wheel",
                 "smplx",
                 "trimesh",
                 "tqdm",
+                "matplotlib",
                 "moderngl-window==2.4.6"]
 
 setup(
