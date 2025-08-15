@@ -224,7 +224,7 @@ if __name__ == "__main__":
     if socket.gethostname() == 'ps019':
         skin_mesh_dst="/home/mkeller2/data2/Code/myo_SKEL/assets/skin.obj"
     else:
-        skin_mesh_dst="./SKEL.obj"
+        skin_mesh_dst="./output/SKEL.obj"
 
     optimized_skin_mesh.write_obj(skin_mesh_dst)
     print(f"Optimized mesh saved at {skin_mesh_dst}")
